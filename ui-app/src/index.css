@@ -1,68 +1,144 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f8f8;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
 }
 
+.container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #2e2e2e;
+  text-align: left;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #4f4f4f;
+}
+
+input[type="text"], input[type="checkbox"], select{
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+select {
+  color: gray;
+}
+
+select:valid {
+  color: black;
+}
+
+input[type="checkbox"] {
+  margin-bottom: 0;
+}
+
+input[type="text"]:focus, select:focus {
+  outline: none;
+  border-color: #7a5bf1;
+}
+
+.privacy-policy {
+  font-size: 0.85rem;
+  color: gray;
+  display: flex;
+  align-items: center;
+}
+
+.privacy-policy input {
+  margin-right: 10px;
+}
+
+.privacy-policy a {
+  color: gray;
+}
+
+.privacy-policy a:hover {
+  text-decoration: underline;
+}
+
+.submit-button {
+  padding: 15px;
+  margin-top: 1rem;
+  font-size: 1rem;
+  background-color: #7a5bf1;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: background-color 0.3s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.submit-button:hover {
+  background-color: #5e44c9;
+}
+
+.team-list {
+  margin-top: 30px;
+}
+
+#team-members {
+  list-style: none;
+  padding: 0;
+}
+
+.team-members-item {
+  background-color: #f8f8f8;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team-members-item p {
+  margin: 0;
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #dc3545;
+  transition: color 0.3s ease;
+}
+
+.delete-button:hover {
+  color: #b52a35;
+}
+
+.gray-text {
+  color:gray;
 }
