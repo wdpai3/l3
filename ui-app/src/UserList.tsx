@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css'; 
+import './index.css';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -10,10 +10,10 @@ const UserList = () => {
         role: '',
     });
 
-    // Funkcja do pobierania użytkowników
+    // Pobieranie użytkowników
     const fetchUsers = () => {
         axios
-            .get('http://localhost:8000/users/')
+            .get('http://localhost:8000/api/users/')
             .then(response => {
                 setUsers(response.data);
             })
@@ -35,7 +35,7 @@ const UserList = () => {
     const handleAddUser = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post('http://localhost:8000/users/', newUser)
+            .post('http://localhost:8000/api/users/', newUser)
             .then(() => {
                 fetchUsers(); // Odśwież listę użytkowników
                 setNewUser({ first_name: '', last_name: '', role: '' }); // Wyczyść formularz
@@ -46,77 +46,84 @@ const UserList = () => {
     // Usuwanie użytkownika
     const handleDeleteUser = (id: number) => {
         axios
-            .delete(`http://localhost:8000/users/${id}`)
+            .delete(`http://localhost:8000/api/users/${id}`)
             .then(() => {
                 fetchUsers(); // Odśwież listę użytkowników
             })
             .catch(error => console.error('Error deleting user:', error));
     };
 
+    // Funkcja renderująca listę użytkowników
+    const displayItems = (items: any[]) => {
+        return items.map((item) => (
+            <li key={item.id} className="team-members-item">
+                <div>
+                    <p><strong>{item.first_name} {item.last_name}</strong></p>
+                    <p className="gray-text">{item.role}</p>
+                </div>
+                <button
+                    className="delete-button"
+                    onClick={() => handleDeleteUser(item.id)}
+                >
+                    🗑️
+                </button>
+            </li>
+        ));
+    };
+
     return (
         <div className="container">
-            <h1>Lista użytkowników</h1>
-            <ul id="team-members">
-                {users.map((user: any) => (
-                    <li key={user.id} className="team-members-item">
-                        <div>
-                            <p>
-                                <strong>{user.first_name} {user.last_name}</strong>
-                            </p>
-                            <p className="gray-text">{user.role}</p>
-                        </div>
-                        <button
-                            className="delete-button"
-                            onClick={() => handleDeleteUser(user.id)}
-                        >
-                            🗑️
-                        </button>
-                    </li>
-                ))}
-            </ul>
-
-            <h2>Dodaj użytkownika</h2>
+            <h1>Let's Level Up Your Brand Together</h1>
             <form onSubmit={handleAddUser}>
-                <label htmlFor="first_name">Imię</label>
+                <label htmlFor="first_name">First name</label>
                 <input
                     type="text"
-                    id="first_name"
                     name="first_name"
-                    placeholder="Imię"
+                    placeholder="First name"
                     value={newUser.first_name}
                     onChange={handleInputChange}
                     required
                 />
 
-                <label htmlFor="last_name">Nazwisko</label>
+                <label htmlFor="last_name">Last name</label>
                 <input
                     type="text"
-                    id="last_name"
                     name="last_name"
-                    placeholder="Nazwisko"
+                    placeholder="Last name"
                     value={newUser.last_name}
                     onChange={handleInputChange}
                     required
                 />
 
-                <label htmlFor="role">Rola</label>
+                <label htmlFor="role">Role</label>
                 <select
-                    id="role"
                     name="role"
                     value={newUser.role}
                     onChange={handleInputChange}
                     required
                 >
-                    <option value="" disabled>
-                        Wybierz rolę
-                    </option>
-                    <option value="student">Student</option>
-                    <option value="teacher">Nauczyciel</option>
-                    <option value="admin">Administrator</option>
+                    <option value="" disabled>Role</option>
+                    <option value="Manager">Manager</option>
+                    <option value="CTO">CTO</option>
+                    <option value="Development Lead">Development Lead</option>
+                    <option value="Product Designer">Product Designer</option>
                 </select>
 
-                <button type="submit" className="submit-button">Dodaj</button>
+                <div className="privacy-policy">
+                    <input type="checkbox" id="agree" name="agree" required />
+                    <label htmlFor="agree">
+                        You agree to our friendly <a href="#">privacy policy</a>.
+                    </label>
+                </div>
+
+                <button type="submit" className="submit-button">Submit</button>
             </form>
+
+            <div className="team-list">
+                <ul id="team-members">
+                    {displayItems(users)}
+                </ul>
+            </div>
         </div>
     );
 };

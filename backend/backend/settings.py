@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'corsheaders',
     'rest_framework',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,7 +51,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",  # React frontend
+]
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -81,10 +89,14 @@ DATABASES = {
         'NAME': 'mydatabase',
         'USER': 'myuser',
         'PASSWORD': 'mypassword',
-        'HOST': 'postgres',  # This should match the service name in docker-compose !
+
+        'HOST': 'postgres', # gdy uruchamiamy z wykorzystaniem docker-compose !!!
+        #'HOST': localhost, # gdy uruchamiamy lokalnie !!!
+
         'PORT': '5432',
     }
 }
+
 
 
 # Password validation
