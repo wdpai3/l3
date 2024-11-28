@@ -1,5 +1,3 @@
-
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -37,13 +35,23 @@ form {
   gap: 10px;
 }
 
+form.edit-mode {
+  border: 2px dashed #7a5bf1; /* Wyróżnij formularz w trybie edycji */
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+form.edit-mode label {
+  color: #7a5bf1; /* Zmiana koloru etykiet w trybie edycji */
+}
+
 label {
   font-weight: bold;
   font-size: 0.9rem;
   color: #4f4f4f;
 }
 
-input[type="text"], input[type="checkbox"], select{
+input[type="text"], input[type="checkbox"], select {
   padding: 10px;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -103,6 +111,22 @@ input[type="text"]:focus, select:focus {
   background-color: #5e44c9;
 }
 
+.cancel-button {
+  padding: 15px;
+  margin-top: 1rem;
+  font-size: 1rem;
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #b52a35;
+}
+
 .team-list {
   margin-top: 30px;
 }
@@ -126,6 +150,20 @@ input[type="text"]:focus, select:focus {
   margin: 0;
 }
 
+.edit-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #28a745;
+  transition: color 0.3s ease;
+}
+
+.edit-button:hover {
+  color: #218838;
+}
+
+
 .delete-button {
   background-color: transparent;
   border: none;
@@ -140,5 +178,5 @@ input[type="text"]:focus, select:focus {
 }
 
 .gray-text {
-  color:gray;
+  color: gray;
 }

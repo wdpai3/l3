@@ -19,13 +19,31 @@ def user_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['DELETE'])
-def user_delete(request, pk):
+@api_view(['PUT', 'DELETE'])
+def user_update(request, pk):
     try:
         user = User.objects.get(pk=pk)
     except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    user.delete()
-    return Response(f"User deleted within id: {pk}", status=status.HTTP_204_NO_CONTENT)
+    if request.method == 'PUT':
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        user.delete()
+        return Response(f"User deleted within id: {pk}", status=status.HTTP_204_NO_CONTENT)
+
+
+# @api_view(['DELETE'])
+# def user_delete(request, pk):
+#     try:
+#         user = User.objects.get(pk=pk)
+#     except User.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     user.delete()
+#     return Response(f"User deleted within id: {pk}", status=status.HTTP_204_NO_CONTENT)

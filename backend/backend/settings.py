@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'api',
     'corsheaders',
     'rest_framework',
-]
+]   # Lista zainstalowanych aplikacji zainstalowanych w projekcie
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -52,11 +53,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-]
+]   # Lista warstw pośrednich, które przetwarzają żądania i odpowiedzi
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",  # React frontend
-]
+]   # Lista domen, które mogą wysyłać żądania do API z innych źródeł
+# CORS_ALLOW_ALL_ORIGINS = True 
 
 
 ROOT_URLCONF = 'backend.urls'

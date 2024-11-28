@@ -5,10 +5,12 @@ import './index.css';
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({
+        id: null, // Dodaj ID użytkownika (potrzebne do edycji)
         first_name: '',
         last_name: '',
         role: '',
     });
+    const [isEditing, setIsEditing] = useState(false); // Czy edytujemy użytkownika
 
     // Pobieranie użytkowników
     const fetchUsers = () => {
@@ -25,7 +27,7 @@ const UserList = () => {
         fetchUsers();
     }, []);
 
-    // Obsługa formularza dodawania użytkownika
+    // Obsługa formularza
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setNewUser({ ...newUser, [name]: value });
@@ -38,9 +40,28 @@ const UserList = () => {
             .post('http://localhost:8000/api/users/', newUser)
             .then(() => {
                 fetchUsers(); // Odśwież listę użytkowników
-                setNewUser({ first_name: '', last_name: '', role: '' }); // Wyczyść formularz
+                setNewUser({ id: null, first_name: '', last_name: '', role: '' }); // Wyczyść formularz
             })
             .catch(error => console.error('Error adding user:', error));
+    };
+
+    // Aktualizowanie użytkownika
+    const handleUpdateUser = (e: React.FormEvent) => {
+        e.preventDefault();
+        axios
+            .put(`http://localhost:8000/api/users/${newUser.id}/`, newUser)
+            .then(() => {
+                fetchUsers(); // Odśwież listę użytkowników
+                setNewUser({ id: null, first_name: '', last_name: '', role: '' }); // Wyczyść formularz
+                setIsEditing(false); // Przełącz na tryb dodawania
+            })
+            .catch(error => console.error('Error updating user:', error));
+    };
+
+    // Wybór użytkownika do edycji
+    const handleEditUser = (user: any) => {
+        setNewUser(user); // Wypełnij formularz danymi użytkownika
+        setIsEditing(true); // Ustaw tryb edycji
     };
 
     // Usuwanie użytkownika
@@ -61,20 +82,28 @@ const UserList = () => {
                     <p><strong>{item.first_name} {item.last_name}</strong></p>
                     <p className="gray-text">{item.role}</p>
                 </div>
-                <button
-                    className="delete-button"
-                    onClick={() => handleDeleteUser(item.id)}
-                >
-                    🗑️
-                </button>
+                <div>
+                    <button
+                        className="edit-button"
+                        onClick={() => handleEditUser(item)} // Przyciskiem rozpoczynamy edycję
+                    >
+                        ✏️
+                    </button>
+                    <button
+                        className="delete-button"
+                        onClick={() => handleDeleteUser(item.id)}
+                    >
+                        🗑️
+                    </button>
+                </div>
             </li>
         ));
     };
 
     return (
         <div className="container">
-            <h1>Let's Level Up Your Brand Together</h1>
-            <form onSubmit={handleAddUser}>
+            <h1>{isEditing ? 'Edit User' : 'Add User'}</h1>
+            <form onSubmit={isEditing ? handleUpdateUser : handleAddUser}>
                 <label htmlFor="first_name">First name</label>
                 <input
                     type="text"
@@ -102,21 +131,16 @@ const UserList = () => {
                     onChange={handleInputChange}
                     required
                 >
-                    <option value="" disabled>Role</option>
+                    <option value="" disabled>Select role</option>
                     <option value="Manager">Manager</option>
                     <option value="CTO">CTO</option>
                     <option value="Development Lead">Development Lead</option>
                     <option value="Product Designer">Product Designer</option>
                 </select>
 
-                <div className="privacy-policy">
-                    <input type="checkbox" id="agree" name="agree" required />
-                    <label htmlFor="agree">
-                        You agree to our friendly <a href="#">privacy policy</a>.
-                    </label>
-                </div>
-
-                <button type="submit" className="submit-button">Submit</button>
+                <button type="submit" className="submit-button">
+                    {isEditing ? 'Update' : 'Submit'}
+                </button>
             </form>
 
             <div className="team-list">
