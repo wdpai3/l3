@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'api',
     'corsheaders',
     'rest_framework',
+    'rest_framework_simplejwt',  # Dodano aplikację rest_framework_simplejwt
+
 ]   # Lista zainstalowanych aplikacji zainstalowanych w projekcie
 
 
@@ -142,3 +145,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Token dostępu żyje 15 minut
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # Token odświeżający żyje 7 dni
+    'ROTATE_REFRESH_TOKENS': False,                   # Nie rotujemy tokenów odświeżających
+    'BLACKLIST_AFTER_ROTATION': True,                 # Czarnolistujemy tokeny po rotacji
+    'ALGORITHM': 'RS256',                             # Używamy algorytmu RSA z SHA-256
+    'SIGNING_KEY': SECRET_KEY,                        # Klucz podpisujący, ustawiony na SECRET_KEY z Django
+    'AUTH_HEADER_TYPES': ('Bearer',),                 # Typ nagłówka autoryzacyjnego
+}
+
+AUTH_USER_MODEL = 'api.SystemUser'
