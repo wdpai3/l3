@@ -61,3 +61,10 @@ def business_user_update(request, pk):
     elif request.method == 'DELETE':
         user.delete()
         return Response({"message": f"BusinessUser deleted with id: {pk}"}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def system_user_detail(request):
+    user = SystemUser.objects.get(pk=request.user.id)
+    serializer = SystemUserSerializer(user)
+    return Response(serializer.data)

@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
-    'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt',  # Dodano aplikację rest_framework_simplejwt
+    'rest_framework_simplejwt',
+    'corsheaders',  # Dodano aplikację rest_framework_simplejwt
 
 ]   # Lista zainstalowanych aplikacji zainstalowanych w projekcie
 
@@ -96,7 +96,7 @@ DATABASES = {
         'PASSWORD': 'mypassword',
 
         'HOST': 'postgres', # gdy uruchamiamy z wykorzystaniem docker-compose !!!
-        #'HOST': localhost, # gdy uruchamiamy lokalnie !!!
+        #'HOST': 'localhost', # gdy uruchamiamy lokalnie !!!
 
         'PORT': '5432',
     }
