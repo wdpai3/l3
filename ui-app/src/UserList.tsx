@@ -15,7 +15,7 @@ const UserList = () => {
     // Pobieranie użytkowników
     const fetchUsers = () => {
         axios
-            .get('http://localhost:8000/api/users/')
+            .get('http://localhost:8000/api/business_users/')
             .then(response => {
                 setUsers(response.data);
             })
@@ -37,7 +37,7 @@ const UserList = () => {
     const handleAddUser = (e: React.FormEvent) => {
         e.preventDefault();
         axios
-            .post('http://localhost:8000/api/users/', newUser)
+            .post('http://localhost:8000/api/business_users/', newUser)
             .then(() => {
                 fetchUsers(); // Odśwież listę użytkowników
                 setNewUser({ id: null, first_name: '', last_name: '', role: '' }); // Wyczyść formularz
@@ -101,8 +101,9 @@ const UserList = () => {
     };
 
     return (
+        
         <div className="container">
-            <h1>{isEditing ? 'Edit User' : 'Add User'}</h1>
+            <h1>{isEditing ? 'Edit User' : "Let's level up your brand, together"}</h1>
             <form onSubmit={isEditing ? handleUpdateUser : handleAddUser}>
                 <label htmlFor="first_name">First name</label>
                 <input
@@ -137,6 +138,13 @@ const UserList = () => {
                     <option value="Development Lead">Development Lead</option>
                     <option value="Product Designer">Product Designer</option>
                 </select>
+
+                <div className="privacy-policy">
+                    <input type="checkbox" id="agree" name="agree" required />
+                    <label htmlFor="agree">
+                        You agree to our friendly <a href="#">privacy policy</a>.
+                    </label>
+                </div>
 
                 <button type="submit" className="submit-button">
                     {isEditing ? 'Update' : 'Submit'}
