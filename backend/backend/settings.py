@@ -156,9 +156,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # Token odświeżający żyje 7 dni
     'ROTATE_REFRESH_TOKENS': False,                   # Nie rotujemy tokenów odświeżających
     'BLACKLIST_AFTER_ROTATION': True,                 # Czarnolistujemy tokeny po rotacji
-    'ALGORITHM': 'RS256',                             # Używamy algorytmu RSA z SHA-256
-    'SIGNING_KEY': SECRET_KEY,                        # Klucz podpisujący, ustawiony na SECRET_KEY z Django
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,  # Klucz symetryczny                        # Klucz podpisujący, ustawiony na SECRET_KEY z Django
     'AUTH_HEADER_TYPES': ('Bearer',),                 # Typ nagłówka autoryzacyjnego
+
 }
 
 AUTH_USER_MODEL = 'api.SystemUser'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import "../register.css"
+import "../register.css";
 
 const Register = () => {
     // Pola jako oddzielne stany
@@ -8,20 +8,29 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
+    const [message, setMessage] = useState(''); // Przechowuje komunikaty dla użytkownika
 
     const handleSubmit = async (e: React.FormEvent) => {
-        // Zablokowanie domyślnej funkcjonalności SUBMIT formularza
         e.preventDefault();
 
-        // const formData = { username, email, password };
+        // Walidacja długości hasła
+        if (password.length < 8) {
+            setMessage('Hasło musi mieć co najmniej 8 znaków.');
+            return;
+        }
+
+        // Walidacja zgodności haseł
+        if (password !== confirmPassword) {
+            setMessage('Hasło i potwierdzenie hasła muszą być takie samo.');
+            return;
+        }
 
         try {
-             await axios.post('http://localhost:8000/api/register/', { username, email, password });
-            // Dodanie notyfikacji zamiast alertu
-            console.log('Rejestracja zakończona sukcesem!');
+            await axios.post('http://localhost:8000/api/register/', { username, email, password });
+            setMessage('Zarejestrowano pomyślnie!'); // Komunikat o sukcesie
         } catch (error) {
             console.error('Błąd podczas rejestracji:', error);
+            setMessage('Rejestracja nie powiodła się. Spróbuj ponownie.');
         }
     };
 
@@ -49,26 +58,31 @@ const Register = () => {
             <input
                 type="password"
                 id="password"
-                placeholder="min 8 characters"
+                placeholder="min 8 znaków"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                minLength={8}
                 required
             />
 
-<label htmlFor="confirmPassword">Confirm password</label>
+            <label htmlFor="confirmPassword">Potwierdź hasło:</label>
             <input
                 type="password"
                 id="confirmPassword"
-                placeholder="min 8 characters"
+                placeholder="min 8 znaków"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                minLength={8}
                 required
             />
+
+            {/* Komunikat dla użytkownika */}
+            {message && <p className="message">{message}</p>}
 
             <div className="privacy-policy">
                 <input type="checkbox" id="agree" required />
                 <label htmlFor="agree">
-                    You agree to our friendly <a href="#">privacy policy</a>.
+                    Zgadzam się z <a href="#">polityką prywatności</a>.
                 </label>
             </div>
 
@@ -78,44 +92,3 @@ const Register = () => {
 };
 
 export default Register;
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import '../register.css';
-
-// const Register = () => {
-//     const [username, setUsername] = useState('');
-//     const [email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-//     const [message, setMessage] = useState('');
-
-//     const handleSubmit = async (e: React.FormEvent) => {
-//         e.preventDefault();
-//         try {
-//             await axios.post('http://localhost:8000/api/register/', { username, email, password });
-//             setMessage('Rejestracja zakończona sukcesem!');
-//         } catch (error) {
-//             console.error('Błąd rejestracji:', error);
-//             setMessage('Błąd rejestracji.');
-//         }
-//     };
-
-//     return (
-//         <form onSubmit={handleSubmit}>
-//             <h2>Rejestracja</h2>
-//             <label>Nazwa użytkownika:</label>
-//             <input type="text" onChange={(e) => setUsername(e.target.value)} required />
-
-//             <label>Email:</label>
-//             <input type="email" onChange={(e) => setEmail(e.target.value)} required />
-
-//             <label>Hasło:</label>
-//             <input type="password" onChange={(e) => setPassword(e.target.value)} required />
-
-//             <button type="submit">Zarejestruj się</button>
-//             {message && <p>{message}</p>}
-//         </form>
-//     );
-// };
-
-// export default Register;

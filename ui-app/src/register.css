@@ -81,3 +81,22 @@ button {
 button:hover {
     background-color: #5a4dcf;
 }
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.message {
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.message.success {
+    color: green;
+}
+
+.message.error {
+    color: red;
+}

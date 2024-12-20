@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from './axiosConfig';
 import './index.css';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState({
-        id: null, // Dodaj ID użytkownika (potrzebne do edycji)
+        id: null,
         first_name: '',
         last_name: '',
         role: '',
     });
-    const [isEditing, setIsEditing] = useState(false); // Czy edytujemy użytkownika
+    const [isEditing, setIsEditing] = useState(false);
 
     // Pobieranie użytkowników
-    const fetchUsers = () => {
-        axios
-            .get('http://localhost:8000/api/business_users/')
-            .then(response => {
-                setUsers(response.data);
-            })
-            .catch(error => console.error('Error fetching users:', error));
+    const fetchUsers = async () => {
+        try {
+            const response = await axiosInstance.get('business_users/');
+            setUsers(response.data);
+        } catch (error) {
+            console.error('Błąd podczas pobierania użytkowników:', error);
+        }
     };
 
-    // Pobranie użytkowników na start
+    // Pobierz użytkowników na start
     useEffect(() => {
         fetchUsers();
     }, []);
@@ -34,44 +34,38 @@ const UserList = () => {
     };
 
     // Dodawanie użytkownika
-    const handleAddUser = (e: React.FormEvent) => {
+    const handleAddUser = async (e: React.FormEvent) => {
         e.preventDefault();
-        axios
-            .post('http://localhost:8000/api/business_users/', newUser)
-            .then(() => {
-                fetchUsers(); // Odśwież listę użytkowników
-                setNewUser({ id: null, first_name: '', last_name: '', role: '' }); // Wyczyść formularz
-            })
-            .catch(error => console.error('Error adding user:', error));
+        try {
+            await axiosInstance.post('business_users/', newUser);
+            fetchUsers();
+            setNewUser({ id: null, first_name: '', last_name: '', role: '' });
+        } catch (error) {
+            console.error('Błąd podczas dodawania użytkownika:', error);
+        }
     };
 
     // Aktualizowanie użytkownika
-    const handleUpdateUser = (e: React.FormEvent) => {
+    const handleUpdateUser = async (e: React.FormEvent) => {
         e.preventDefault();
-        axios
-            .put(`http://localhost:8000/api/users/${newUser.id}/`, newUser)
-            .then(() => {
-                fetchUsers(); // Odśwież listę użytkowników
-                setNewUser({ id: null, first_name: '', last_name: '', role: '' }); // Wyczyść formularz
-                setIsEditing(false); // Przełącz na tryb dodawania
-            })
-            .catch(error => console.error('Error updating user:', error));
-    };
-
-    // Wybór użytkownika do edycji
-    const handleEditUser = (user: any) => {
-        setNewUser(user); // Wypełnij formularz danymi użytkownika
-        setIsEditing(true); // Ustaw tryb edycji
+        try {
+            await axiosInstance.put(`business_users/${newUser.id}/`, newUser);
+            fetchUsers();
+            setNewUser({ id: null, first_name: '', last_name: '', role: '' });
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Błąd podczas aktualizowania użytkownika:', error);
+        }
     };
 
     // Usuwanie użytkownika
-    const handleDeleteUser = (id: number) => {
-        axios
-            .delete(`http://localhost:8000/api/users/${id}`)
-            .then(() => {
-                fetchUsers(); // Odśwież listę użytkowników
-            })
-            .catch(error => console.error('Error deleting user:', error));
+    const handleDeleteUser = async (id: number) => {
+        try {
+            await axiosInstance.delete(`business_users/${id}/`);
+            fetchUsers();
+        } catch (error) {
+            console.error('Błąd podczas usuwania użytkownika:', error);
+        }
     };
 
     // Funkcja renderująca listę użytkowników
@@ -79,20 +73,15 @@ const UserList = () => {
         return items.map((item) => (
             <li key={item.id} className="team-members-item">
                 <div>
-                    <p><strong>{item.first_name} {item.last_name}</strong></p>
+                    <p>
+                        <strong>
+                            {item.first_name} {item.last_name}
+                        </strong>
+                    </p>
                     <p className="gray-text">{item.role}</p>
                 </div>
                 <div>
-                    <button
-                        className="edit-button"
-                        onClick={() => handleEditUser(item)} // Przyciskiem rozpoczynamy edycję
-                    >
-                        ✏️
-                    </button>
-                    <button
-                        className="delete-button"
-                        onClick={() => handleDeleteUser(item.id)}
-                    >
+                    <button className="delete-button" onClick={() => handleDeleteUser(item.id)}>
                         🗑️
                     </button>
                 </div>
@@ -101,60 +90,52 @@ const UserList = () => {
     };
 
     return (
-        
         <div className="container">
-            <h1>{isEditing ? 'Edit User' : "Let's level up your brand, together"}</h1>
+            <h1>{isEditing ? 'Edytuj użytkownika' : 'Dodaj użytkownika biznesowego'}</h1>
             <form onSubmit={isEditing ? handleUpdateUser : handleAddUser}>
-                <label htmlFor="first_name">First name</label>
+                <label htmlFor="first_name">Imię</label>
                 <input
                     type="text"
                     name="first_name"
-                    placeholder="First name"
+                    placeholder="Imię"
                     value={newUser.first_name}
                     onChange={handleInputChange}
                     required
                 />
 
-                <label htmlFor="last_name">Last name</label>
+                <label htmlFor="last_name">Nazwisko</label>
                 <input
                     type="text"
                     name="last_name"
-                    placeholder="Last name"
+                    placeholder="Nazwisko"
                     value={newUser.last_name}
                     onChange={handleInputChange}
                     required
                 />
 
-                <label htmlFor="role">Role</label>
+                <label htmlFor="role">Rola</label>
                 <select
                     name="role"
                     value={newUser.role}
                     onChange={handleInputChange}
                     required
                 >
-                    <option value="" disabled>Select role</option>
+                    <option value="" disabled>
+                        Wybierz rolę
+                    </option>
                     <option value="Manager">Manager</option>
                     <option value="CTO">CTO</option>
                     <option value="Development Lead">Development Lead</option>
                     <option value="Product Designer">Product Designer</option>
                 </select>
 
-                <div className="privacy-policy">
-                    <input type="checkbox" id="agree" name="agree" required />
-                    <label htmlFor="agree">
-                        You agree to our friendly <a href="#">privacy policy</a>.
-                    </label>
-                </div>
-
                 <button type="submit" className="submit-button">
-                    {isEditing ? 'Update' : 'Submit'}
+                    {isEditing ? 'Zaktualizuj' : 'Dodaj'}
                 </button>
             </form>
 
             <div className="team-list">
-                <ul id="team-members">
-                    {displayItems(users)}
-                </ul>
+                <ul id="team-members">{displayItems(users)}</ul>
             </div>
         </div>
     );

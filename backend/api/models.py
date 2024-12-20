@@ -16,7 +16,7 @@ class SystemUser(AbstractUser):
     """
     Systemowy użytkownik odpowiedzialny za logowanie i rejestrację.
     """
-    email = models.EmailField() # TODO zadbaj by wymagana była unikalność
+    email = models.EmailField(unique=True)  # Dodano unikalność dla emaila
 
     groups = models.ManyToManyField(
         Group,
