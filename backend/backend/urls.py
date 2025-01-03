@@ -19,6 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),  # This includes the `api` app URLs
+    path('api/', include('api.urls')),  # Łączy URL-e aplikacji api z głównym projektem
 ]
 

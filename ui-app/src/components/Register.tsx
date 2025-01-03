@@ -7,7 +7,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // Przechowuje wartości pól formularza
     const [message, setMessage] = useState(''); // Przechowuje komunikaty dla użytkownika
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +26,7 @@ const Register = () => {
         }
 
         try {
-            await axios.post('http://localhost:8000/api/register/', { username, email, password });
+            await axios.post('http://localhost:8000/api/register/', { username, email, password }); // Wysyła dane rejestracji do API 
             setMessage('Zarejestrowano pomyślnie!'); // Komunikat o sukcesie
         } catch (error) {
             console.error('Błąd podczas rejestracji:', error);

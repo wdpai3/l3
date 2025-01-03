@@ -155,10 +155,10 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Token dostępu żyje 15 minut
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # Token odświeżający żyje 7 dni
     'ROTATE_REFRESH_TOKENS': False,                   # Nie rotujemy tokenów odświeżających
-    'BLACKLIST_AFTER_ROTATION': True,                 # Czarnolistujemy tokeny po rotacji
+    'BLACKLIST_AFTER_ROTATION': True,                 # Blacklistujemy tokeny po rotacji
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,  # Klucz symetryczny                        # Klucz podpisujący, ustawiony na SECRET_KEY z Django
-    'AUTH_HEADER_TYPES': ('Bearer',),                 # Typ nagłówka autoryzacyjnego
+    'SIGNING_KEY': SECRET_KEY,  # Klucz symetryczny, Klucz podpisujący, ustawiony na SECRET_KEY z Django
+    'AUTH_HEADER_TYPES': ('Bearer',), # Typ nagłówka autoryzacyjnego
 
 }
 

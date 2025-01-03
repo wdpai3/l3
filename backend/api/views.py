@@ -23,10 +23,9 @@ def register(request):
         status=status.HTTP_400_BAD_REQUEST  # Nieprawidłowe dane wejściowe
     )
 
-@api_view(['POST'])  # Logowanie dostępne publicznie
-def login(request):
-    # Załóżmy, że masz już odpowiedni widok logowania.
-    pass
+# @api_view(['POST'])  # Logowanie dostępne publicznie
+# def login(request):
+#     pass
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])  # Wymaga zalogowania

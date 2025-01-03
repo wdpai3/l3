@@ -14,10 +14,10 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Endpoint logowania (otrzymanie tokenu dostępu i odświeżającego)
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Endpoint odświeżania tokenu
 
-    # Endpointy biznesowe użytkowników (jeśli są potrzebne)
+    # Endpointy biznesowe użytkowników
     path('business_users/', business_user_list, name='business_user_list'),
     path('business_users/<int:pk>/', business_user_update, name='business_user_update'),
 
-    # Endpointy użytkowników systemowych (jeśli są potrzebne)
-    path(',me/', system_user_detail, name='system_user_detail'),
+    # Endpointy użytkowników systemowych 
+    path('me/', system_user_detail, name='system_user_detail'),
 ]
